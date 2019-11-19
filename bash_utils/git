@@ -1,0 +1,48 @@
+#!/bin/bash
+
+git_log_decorations() {
+	git log --graph --all --color --simplify-by-decoration --pretty=format:"%C(yellow) %h %C(cyan) %D %C(white) %s"
+}
+
+git_log_follow() {
+	watch -n 10 -c -t ". ~/bash_functions/git; git fetch; git remote prune origin; git_log_decorations"
+}
+
+gcb() { git checkout -B "$1" && git push -u origin "$1" ; }
+
+gdb() {
+	git branch -D "$1" && \
+	git push --delete origin "$1" && \
+	git remote prune origin
+}
+
+git_release() {
+    local readonly REMOTE="$(git remote get-url origin)" && \
+    local readonly DIR_NAME="$(basename $(git rev-parse --show-toplevel))" && \
+    mkdir /tmp/git_release && \
+    (\
+        cd /tmp/git_release/ && \
+        git clone "$REMOTE" && \
+        cd "$DIR_NAME" && \
+        git rebase "origin/$1" && \
+        git push \
+    ); \
+    rm -rf /tmp/git_release
+}
+
+alias ga='git add'
+alias gc='git checkout'
+alias gcan='git commit --amend --no-edit'
+alias gci='git commit --interactive'
+alias gcm='git commit -m'
+alias gd='git diff'
+alias gl='git log --graph --oneline'
+alias gla='git log --graph --oneline --all'
+alias gp='git push'
+alias gpf='git push --force-with-lease'
+alias gpr='git pull --rebase'
+alias grc='git rebase --continue'
+alias grh='git reset --hard'
+alias gri='git rebase -i'
+alias grim='git rebase -i origin/master'
+alias gs='git status'
