@@ -1,0 +1,37 @@
+image: debian/stable
+sources:
+  - https://git.sr.ht/~retzoh/bash_functions
+environment:
+  REPOSITORY_NAME: bash_functions
+  PACKAGE_NAME: bash_functions
+  PACKAGE_FOLDER: bash_functions
+  PACKAGE_PATH: .
+  GIT_SR_HT_URL: git@git.sr.ht:~retzoh/bash_functions
+  GITHUB_URL: git@github.com:Retzoh/bash_functions.git
+secrets:
+  - ed37ce69-d5be-42df-9b92-41471089d431  # ~/.ssh/known_hosts
+  - 899472e5-1ec8-4211-a00b-05a0d3eaf775  # ~/.ssh/.github_deploy_ssh_key
+tasks:
+- deploy_master: |
+    ln -sf ~/.ssh/.build_test_ssh_key ~/.ssh/id_rsa
+
+    cd "$REPOSITORY_NAME"
+    git remote set-url origin $GIT_SR_HT_URL
+    lines=`git diff --stat origin/master..HEAD | wc -l`
+    if [ $lines -eq 0 ]
+    then
+
+    # deploy code
+    git config --global user.email "~retzoh/builds@lists.sr.ht"
+    git config --global user.name "Deploy"
+
+    ln -sf ~/.ssh/.github_deploy_ssh_key ~/.ssh/id_rsa
+    git checkout -B master -t origin/master
+    git remote set-url origin $GITHUB_URL
+    git push --set-upstream origin master
+
+    else
+
+    echo "Aborting github deployment: HEAD is dirty compared to master."
+
+    fi
