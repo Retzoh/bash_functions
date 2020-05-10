@@ -1,0 +1,11 @@
+#! /bin/bash
+
+watch_and_run () {
+    local file="${1}" command="${2}"
+    shift
+    command="${*}"
+    while true ; do
+        inotifywait -q -e modify "${file}"
+        eval "${command}"
+    done
+}
