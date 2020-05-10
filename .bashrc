@@ -125,3 +125,9 @@ export VISUAL=vim
 export EDITOR="$VISUAL"
 
 export PATH=$HOME/bin:$PATH
+
+if [ -d ~/bash_utils ]; then
+    for file in ~/bash_utils/*; do
+        . "$file"
+    done
+fi
