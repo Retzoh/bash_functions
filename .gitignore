@@ -4,3 +4,4 @@
 # Except:
 !.gitignore
 !.build.yml
+!bash_utils/
