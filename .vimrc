@@ -1,6 +1,6 @@
 set number
 set relativenumber
-set tabstop=8
+set tabstop=4
 set expandtab
 set shiftwidth=4
 set softtabstop=4
@@ -8,6 +8,8 @@ set softtabstop=4
 syntax on
 set background=dark
 set hls
+set scrolloff=5
+set incsearch
 
 highlight OverLength ctermbg=darkred ctermfg=white guibg=#592929
 match OverLength /\%>120v.\+/
