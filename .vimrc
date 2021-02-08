@@ -12,6 +12,12 @@ set hls
 highlight OverLength ctermbg=darkred ctermfg=white guibg=#592929
 match OverLength /\%>120v.\+/
 
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 " Specify a directory for plugins
 " - Avoid using standard Vim directory names like 'plugin'
 " source : https://github.com/pehota/dotfiles/blob/vim-elm/vimrc
